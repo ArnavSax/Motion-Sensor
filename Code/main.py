@@ -27,10 +27,29 @@ data["time(ms)"] -= data.iloc[0, data.columns.get_loc('time(ms)')] # scale time 
 # plt.ylabel("Acceleration X")
 # plt.show()
 
-
+# Chunking
+n = 2000 # Chunk size
+chunks = [data[i:i+n] for i in range(0,df.shape[0],n)]
 
 def genMatrix(col):
     # feature extraction --> matrix
+    
+    mean = [] # Mean
+    rms = [] # Root Mean Square
+    ssc = [] # Slope Sign Change
+    pos = [] # Positive Peak
+    neg = [] # Negative Peak
+    zero = [] # Zero Crossing
+    
+    for i in chunks:
+        mean.append(i[col].abs().mean())
+        rms.append(np.mean([j**2 for j in i[col]]))
+        
+    
+    
+    
+    return np.stack([mean,rms,ssc,pos,neg,zero], axis=1)
+    
     
 
 
